@@ -11,7 +11,7 @@ export const FeaturedLooks = ({ products }: { products: Product[] }) => {
     <div className="looks-grid">
       {products.slice(0, 2).map((product, i) => <article className={i === 0 ? 'look look--lead' : 'look look--offset'} key={product.id}>
         <MotionReveal direction={i === 0 ? 'left' : 'right'} amount={0.1}>
-          <a className="look__frame" href={product.variants[0]?.officialLinks ? Object.values(product.variants[0].officialLinks!)[0] : '#toko-resmi'} aria-label={`Lihat informasi ${product.title}`}>
+          <a className="look__frame" href="/collections" aria-label={`Lihat informasi ${product.title}`}>
             <img src={product.images[0]?.src} alt={product.images[0]?.alt} width={product.images[0]?.width} height={product.images[0]?.height} loading="lazy" decoding="async" />
             <span className="look__view" aria-hidden="true">↗</span>
           </a>
