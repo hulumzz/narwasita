@@ -1,36 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { SiteShell } from './components/layout/SiteShell';
+import { getFeaturedProducts } from './content/products';
 
-const NotFound = () => (
-  <SiteShell>
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
-      <h1 className="text-6xl font-display mb-4">404</h1>
-      <p className="text-(--color-stone) mb-8">Halaman tidak ditemukan.</p>
-      <a href="/" className="text-(--color-ink) border-b border-(--color-ink) pb-1">Kembali ke Beranda</a>
-    </div>
-  </SiteShell>
-);
-
-const DummyCollections = () => (
-  <SiteShell>
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6 bg-(--color-paper) pt-24">
-      <h1 className="text-4xl font-display mb-4">Koleksi (Dalam Pengembangan)</h1>
-      <p className="text-(--color-stone) mb-8">Halaman katalog akan segera hadir pada fase P1.</p>
-    </div>
-  </SiteShell>
-);
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/collections" element={<DummyCollections />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-export default App;
+const Collections = () => <SiteShell><section className="pt-40 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto min-h-[80vh]"><h1 className="text-5xl md:text-7xl font-display font-semibold tracking-tighter mb-5">Pilihan Narwasita.</h1><p className="max-w-lg leading-relaxed text-(--color-stone) mb-16">Lihat dua tampilan editorial. Informasi produk dan ketersediaan akan diumumkan setelah dikonfirmasi.</p><div className="grid md:grid-cols-2 gap-12">{getFeaturedProducts().map(p=><article key={p.id}><img src={p.images[0].src} alt={p.images[0].alt} className="w-full aspect-[3/4] object-cover" loading="lazy" /><h2 className="text-2xl mt-5 font-display">{p.title}</h2><p className="mt-2 text-(--color-stone)">{p.description}</p></article>)}</div></section></SiteShell>;
+const NotFound = ()=><SiteShell><div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 pt-24"><h1 className="text-6xl font-display">404</h1><p className="mt-4 mb-8">Halaman tidak ditemukan.</p><a href="/" className="border-b pb-1">Kembali ke beranda</a></div></SiteShell>;
+export default function App(){return <BrowserRouter><Routes><Route path="/" element={<Home/>}/><Route path="/collections" element={<Collections/>}/><Route path="*" element={<NotFound/>}/></Routes></BrowserRouter>}
