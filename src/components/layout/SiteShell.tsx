@@ -1,93 +1,31 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
-export const SiteShell = ({ children }: { children: React.ReactNode }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <div className="min-h-screen flex flex-col bg-(--color-paper)">
-      <header 
-        className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-          isScrolled ? 'bg-(--color-paper)/90 backdrop-blur-md border-b border-(--color-stone)/20 py-4' : 'bg-transparent py-6'
-        }`}
-      >
-        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center max-w-[1440px]">
-          <Link to="/" className="text-2xl font-display font-semibold tracking-tight z-50 relative">
-            NARWASITA
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8 text-sm font-medium">
-            <Link to="/collections" className="hover:text-(--color-copper) transition-colors">Koleksi</Link>
-            <a href="#cerita" className="hover:text-(--color-copper) transition-colors">Cerita</a>
-            <a href="#toko-resmi" className="hover:text-(--color-copper) transition-colors">Toko Resmi</a>
-          </nav>
-
-          {/* Mobile Toggle */}
-          <button 
-            className="md:hidden z-50 relative p-2 -mr-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile Nav Overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-(--color-paper) pt-24 px-6">
-          <nav className="flex flex-col gap-6 text-2xl font-display">
-            <Link to="/collections" onClick={() => setMobileMenuOpen(false)}>Koleksi</Link>
-            <a href="#cerita" onClick={() => setMobileMenuOpen(false)}>Cerita</a>
-            <a href="#toko-resmi" onClick={() => setMobileMenuOpen(false)}>Toko Resmi</a>
-          </nav>
-        </div>
-      )}
-
-      <main className="flex-grow">
-        {children}
-      </main>
-
-      <footer className="bg-(--color-ink) text-(--color-white) py-16 px-6 md:px-12 mt-24">
-        <div className="container mx-auto max-w-[1440px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div className="lg:col-span-2">
-            <h2 className="text-4xl md:text-6xl font-display tracking-tight mb-6">NARWASITA</h2>
-            <p className="text-(--color-stone) max-w-sm">Berangkat dari ragam cerita Nusantara, dihadirkan untuk keseharian hari ini.</p>
-          </div>
-          <div>
-            <h3 className="text-sm uppercase tracking-wider text-(--color-stone) mb-4">Eksplorasi</h3>
-            <ul className="space-y-3">
-              <li><Link to="/collections" className="hover:text-(--color-copper) transition-colors">Koleksi</Link></li>
-              <li><a href="#cerita" className="hover:text-(--color-copper) transition-colors">Cerita Kami</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm uppercase tracking-wider text-(--color-stone) mb-4">Hubungi Kami</h3>
-            <ul className="space-y-3 text-(--color-stone)">
-              <li><a href="https://instagram.com/narwasita" target="_blank" rel="noopener noreferrer" className="hover:text-(--color-white) transition-colors">Instagram</a></li>
-              <li><a href="mailto:partner@narwasita.id" className="hover:text-(--color-white) transition-colors">Kemitraan</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="container mx-auto max-w-[1440px] mt-16 pt-8 border-t border-(--color-white)/10 text-sm text-(--color-stone) flex flex-col md:flex-row justify-between">
-          <p>&copy; {new Date().getFullYear()} Narwasita. Semua hak cipta dilindungi.</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            <Link to="/privacy">Privasi</Link>
-            <Link to="/terms">Syarat & Ketentuan</Link>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+export const SiteShell = ({children}:{children:React.ReactNode})=>{
+ const [scrolled,setScrolled]=useState(false);
+ const [open,setOpen]=useState(false);
+ const {pathname}=useLocation();
+ useEffect(()=>{const handle=()=>setScrolled(window.scrollY>64);handle();window.addEventListener('scroll',handle,{passive:true});return()=>window.removeEventListener('scroll',handle)},[]);
+ useEffect(()=>{setOpen(false);window.scrollTo(0,0)},[pathname]);
+ useEffect(()=>{const esc=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpen(false)};document.addEventListener('keydown',esc);return()=>document.removeEventListener('keydown',esc)},[]);
+ useEffect(()=>{document.body.style.overflow=open?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
+ const onHome=pathname==='/';
+ const dark=!scrolled&&onHome&&!open;
+ const a=(id:string)=>onHome?`#${id}`:`/#${id}`;
+ return <div className="min-h-screen flex flex-col bg-(--color-paper)">
+  <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:bg-white focus:p-3">Lewati navigasi</a>
+  <header className={`fixed z-50 top-0 inset-x-0 transition-colors duration-300 ${dark?'text-white bg-transparent':'text-(--color-ink) bg-(--color-paper)/95 backdrop-blur-md border-b border-black/10'}`}>
+   <div className="mx-auto max-w-[1440px] px-5 md:px-12 h-[76px] md:h-[92px] flex items-center justify-between">
+    <Link to="/" className="font-display text-xl md:text-2xl font-extrabold tracking-[-.075em] relative z-50">NARWASITA<span className="text-(--color-copper)">.</span></Link>
+    <nav className="hidden md:flex gap-10 text-[.85rem] font-medium" aria-label="Navigasi utama"><Link to="/collections" className="hover:opacity-60">Koleksi</Link><a href={a('cerita')} className="hover:opacity-60">Cerita</a><a href={a('keaslian')} className="hover:opacity-60">Keaslian</a><a href={a('toko-resmi')} className="hover:opacity-60">Toko resmi</a></nav>
+    <button className="md:hidden relative z-50 p-3 -mr-3" aria-label={open?'Tutup menu':'Buka menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={()=>setOpen(v=>!v)}>{open?<X size={25}/>:<Menu size={25}/>}</button>
+   </div>
+  </header>
+  {open&&<div id="mobile-navigation" className="fixed inset-0 z-40 bg-(--color-paper) pt-32 px-6 text-(--color-ink) md:hidden"><nav aria-label="Navigasi seluler" className="flex flex-col gap-7 text-3xl font-display font-semibold"><Link onClick={()=>setOpen(false)} to="/collections">Koleksi</Link><a onClick={()=>setOpen(false)} href={a('cerita')}>Cerita</a><a onClick={()=>setOpen(false)} href={a('keaslian')}>Keaslian</a><a onClick={()=>setOpen(false)} href={a('toko-resmi')}>Toko resmi</a></nav></div>}
+  <main id="main-content" className="flex-grow">{children}</main>
+  <footer className="bg-(--color-ink) text-white pt-20 md:pt-32 pb-8 px-5 md:px-12">
+   <div className="max-w-[1440px] mx-auto"><div className="flex flex-col md:flex-row justify-between gap-10 pb-16"><div><h2 className="text-5xl md:text-8xl font-display font-bold tracking-[-.09em]">NARWASITA<span className="text-(--color-copper)">.</span></h2><p className="text-white/60 max-w-sm mt-5 leading-relaxed">Cerita dari banyak tempat, dibawa ke keseharian.</p></div><nav className="flex flex-col gap-4 text-sm md:pt-7"><Link to="/collections">Koleksi</Link><a href={a('cerita')}>Cerita</a><a href={a('keaslian')}>Keaslian</a><a href={a('toko-resmi')}>Toko resmi</a></nav></div><div className="pt-6 border-t border-white/20 text-xs text-white/55 flex justify-between flex-wrap gap-3"><span>© {new Date().getFullYear()} Narwasita.</span><span>Dirancang untuk dikenakan hari ini.</span></div></div>
+  </footer>
+ </div>
 };
