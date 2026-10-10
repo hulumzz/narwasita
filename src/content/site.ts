@@ -1,13 +1,20 @@
 import type { SiteContent } from '../types';
-
-export const siteContent: SiteContent = {
- campaign: { heading: 'Nusantara, dipakai dengan cara baru.', body: 'Narwasita merangkai cerita, karakter, dan bentuk ke dalam pakaian sehari-hari.', image: '/images/hero-desktop.jpg', mobileImage: '/images/hero-mobile.jpg', ctaLabel: 'Lihat pilihan Narwasita', ctaLink: '#koleksi' },
- philosophy: { heading: 'Berakar pada keberagaman, dibentuk dengan cara pandang hari ini.', paragraphs: ['Berangkat dari ragam cerita Nusantara, Narwasita menghadirkan tafsir yang lebih dekat dengan keseharian.', 'Bentuk dan cerita berjalan beriringan. Tidak perlu ornamen berlebihan untuk mengingat dari mana inspirasi datang.'] },
- featuredProductIds: ['nws-001','nws-002'],
- // Unverified shop URLs must never be presented as official destinations.
- stores: {},
- verificationUrl: undefined,
- partnerContactUrl: undefined,
- socials: []
+export const siteContent:SiteContent={
+ campaign:{
+  heading:'Nusantara, dipakai dengan cara baru.',
+  body:'Cerita, karakter, dan bentuk Nusantara dalam pakaian sehari-hari.',
+  // Portrait with graphic tee. Replace with approved official campaign photos before production claims.
+  image:'/images/look-01.jpg',mobileImage:'/images/look-01.jpg',
+  ctaLabel:'Lihat pilihan Narwasita',ctaLink:'#koleksi'
+ },
+ philosophy:{
+  heading:'Cerita yang bergerak bersama kita.',
+  paragraphs:[
+   'Berangkat dari ragam cerita Nusantara, Narwasita menghadirkan tafsir visual yang lebih dekat dengan keseharian.',
+   'Bukan soal mengenakan simbol sebanyak mungkin. Kami tertarik pada bagaimana makna, bentuk, dan karakter bertemu dalam satu pakaian.'
+  ]
+ },
+ featuredProductIds:['nws-001','nws-002'],
+ stores:{},verificationUrl:undefined,partnerContactUrl:undefined,socials:[]
 };
-export const getSiteContent = () => siteContent;
+export const getSiteContent=()=>siteContent;
