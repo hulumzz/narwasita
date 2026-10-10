@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1B1B18;
+  --color-paper: #F5F1E9;
+  --color-canvas: #E9E3D9;
+  --color-stone: #A7A096;
+  --color-copper: #9C5C43;
+  --color-moss: #344239;
+  --color-white: #FFFFFF;
+
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
