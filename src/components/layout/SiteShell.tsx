@@ -4,11 +4,11 @@ import { Menu, X } from 'lucide-react';
 import { getSiteContent } from '../../content/site';
 export const SiteShell=({children}:{children:React.ReactNode})=>{
  const [scrolled,setScrolled]=useState(false);const [open,setOpen]=useState(false);
- const {pathname}=useLocation();const onHome=pathname==='/';
+ const {pathname,hash}=useLocation();const onHome=pathname==='/';
  const hasStores=Object.values(getSiteContent().stores).some(s=>s?.enabled&&s.url);
  const anchor=(id:string)=>onHome?'#'+id:'/#'+id;
  useEffect(()=>{const handler=()=>setScrolled(window.scrollY>64);handler();window.addEventListener('scroll',handler,{passive:true});return()=>window.removeEventListener('scroll',handler)},[]);
- useEffect(()=>{setOpen(false);window.scrollTo(0,0)},[pathname]);
+ useEffect(()=>{setOpen(false);if(hash){const id=decodeURIComponent(hash.slice(1));requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({behavior:'instant'}));}else{window.scrollTo(0,0)}},[pathname,hash]);
  useEffect(()=>{const handler=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpen(false)};window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler)},[]);
  useEffect(()=>{document.body.style.overflow=open?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
  const lightText=onHome&&!scrolled&&!open;
